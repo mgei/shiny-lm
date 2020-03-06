@@ -19,6 +19,11 @@ ui <- fluidPage(
       choices = names(feature_matrix), 
       multiple = T
     ),
+    checkboxInput(
+      inputId = "intercept",
+      label = "use an intercept", 
+      value = T),
+    
     DTOutput("rawdata")),
   
   
@@ -45,7 +50,7 @@ server <- function(input, output, session) {
     req(input$model_response)
     req(input$model_features)
     
-    formula <- reformulate(termlabels = input$model_features, response = input$model_response, intercept = T)
+    formula <- reformulate(termlabels = input$model_features, response = input$model_response, intercept = input$intercept)
     
     lm(formula = formula, data = feature_matrix)
     
